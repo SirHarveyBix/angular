@@ -20,8 +20,18 @@ event binding : c'est declancher une fonction lors d'un evenement =
   (click)="onCreateServer()"
 ```
 
-la recuperation d'un parametre, ressemblera a ça : 
+la recuperation d'un parametre, ressemblera a ça =
 
 ```js
   (input)="onUpdateServerName($event)"
+```
+
+- selon ChatGPT =
+
+   >`(input)="onUpdateServerName($event)"` est un exemple de récupération d'un événement d'entrée (`input`) et de passage de son objet `$event` à la fonction `onUpdateServerName()`.
+
+two-way binding permet de lier une valeur a composant =
+
+```js
+  [(ngModel)]="serverName"
 ```
