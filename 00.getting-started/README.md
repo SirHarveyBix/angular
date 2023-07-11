@@ -54,3 +54,9 @@ les directives se declarent avec `*` =
       <p>No server was created</p>
     </ng-template>
   ```
+
+boucles =
+
+```js
+*ngFor="let server of servers; let i = index"
+```
