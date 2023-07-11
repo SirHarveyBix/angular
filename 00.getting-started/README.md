@@ -1,27 +1,62 @@
-# Init
+# Bases
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
+## Binding
 
-## Development server
+string interpolation : c'est comme apeller une variable =
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```js
+  {{ variable }}
+```
 
-## Code scaffolding
+property / data binding : c'est lier un attribu (ici HTML) a une valeur =
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```js
+  [disabled]="!allowNewServers"
+```
 
-## Build
+event binding : c'est declancher une fonction lors d'un evenement =
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```js
+  (click)="onCreateServer()"
+```
 
-## Running unit tests
+la recuperation d'un parametre, ressemblera a ça =
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```js
+  (input)="onUpdateServerName($event)"
+```
 
-## Running end-to-end tests
+- selon ChatGPT =
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+   >`(input)="onUpdateServerName($event)"` est un exemple de récupération d'un événement d'entrée (`input`) et de passage de son objet `$event` à la fonction `onUpdateServerName()`.
 
-## Further help
+two-way binding permet de lier une valeur a un composant =
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```js
+  [(ngModel)]="serverName"
+```
+
+## Directives
+
+les directives se declarent avec `*` =
+
+```js
+  *ngIf="serverCreated"
+```
+
+- pour aller plus loin avec les conditions, `#noServer`, fait reference a `else noServer` present dans `*ngIf` =
+
+    ```html
+    <p *ngIf="serverCreated; else noServer">
+      Server was created, server name is {{ serverCreationStatus }}
+    </p>
+    <ng-template #noServer>
+      <p>No server was created</p>
+    </ng-template>
+  ```
+
+boucles =
+
+```js
+*ngFor="let server of servers; let i = index"
+```
