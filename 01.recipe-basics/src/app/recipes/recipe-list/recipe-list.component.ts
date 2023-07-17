@@ -7,7 +7,7 @@ import { Recipe } from '../recipe.model';
   styleUrls: ['./recipe-list.component.css'],
 })
 export class RecipeListComponent {
-  recipe: Recipe[] = [
+  recipes: Recipe[] = [
     new Recipe(
       'a Test Recipe',
       'this is a test',
