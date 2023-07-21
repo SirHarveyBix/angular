@@ -11,8 +11,8 @@ interface ServerI {
   styleUrls: ['./cockpit.component.css'],
 })
 export class CockpitComponent {
-  @Output() serverCreated = new EventEmitter<ServerI>();
-  @Output() blueprintCreated = new EventEmitter<ServerI>();
+  @Output('srvCreated') serverCreated = new EventEmitter<ServerI>();
+  @Output('bpCreated') blueprintCreated = new EventEmitter<ServerI>();
   newServerName = '';
   newServerContent = '';
 
