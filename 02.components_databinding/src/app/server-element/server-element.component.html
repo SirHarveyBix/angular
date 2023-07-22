@@ -3,13 +3,17 @@
     {{ element.name }}
   </div>
   <div class="panel-body">
-    <p>
+    <ng-content></ng-content>
+
+    <!-- ng-content allow to access Chilidren Elements from the parent, here it is app.component -->
+
+    <!-- <p>
       <strong *ngIf="element.type === 'server'" style="color: red">
         {{ element.content }}
       </strong>
       <em *ngIf="element.type === 'blueprint'">
         {{ element.content }}
       </em>
-    </p>
+    </p> -->
   </div>
 </div>
