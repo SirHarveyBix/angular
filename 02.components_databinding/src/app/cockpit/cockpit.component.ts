@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 interface ServerI {
   serverName: string;
@@ -13,24 +19,31 @@ interface ServerI {
 export class CockpitComponent {
   @Output('srvCreated') serverCreated = new EventEmitter<ServerI>();
   @Output('bpCreated') blueprintCreated = new EventEmitter<ServerI>();
+
+  /* access from : #serverContentInput, get a reference, to the DOM
+      an object, get the value in the object this way : this.serverContentInput.nativeElement.value
+      this is not a way to manipulate the DOM */
+  @ViewChild('serverContentInput', { static: true })
+  serverContentInput: ElementRef;
   // newServerName = '';
-  newServerContent = '';
+  // newServerContent = '';
 
   onAddServer(nameInput: HTMLInputElement) {
+    console.log(this.serverContentInput);
     this.serverCreated.emit({
       /* retrived from : (click)="onAddServer(serverNameInput)",
       thanks to the local reference : #serverNameInput */
       serverName: nameInput.value,
+      serverContent: this.serverContentInput.nativeElement.value,
       // serverName: this.newServerName,
-      serverContent: this.newServerContent,
+      // serverContent: this.newServerContent,
     });
   }
 
   onAddBlueprint(nameInput: HTMLInputElement) {
     this.blueprintCreated.emit({
-      // serverName: this.newServerName,
       serverName: nameInput.value,
-      serverContent: this.newServerContent,
+      serverContent: this.serverContentInput.nativeElement.value,
     });
   }
 }
