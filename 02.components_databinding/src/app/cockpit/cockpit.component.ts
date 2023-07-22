@@ -13,19 +13,23 @@ interface ServerI {
 export class CockpitComponent {
   @Output('srvCreated') serverCreated = new EventEmitter<ServerI>();
   @Output('bpCreated') blueprintCreated = new EventEmitter<ServerI>();
-  newServerName = '';
+  // newServerName = '';
   newServerContent = '';
 
-  onAddServer() {
+  onAddServer(nameInput: HTMLInputElement) {
     this.serverCreated.emit({
-      serverName: this.newServerName,
+      /* retrived from : (click)="onAddServer(serverNameInput)",
+      thanks to the local reference : #serverNameInput */
+      serverName: nameInput.value,
+      // serverName: this.newServerName,
       serverContent: this.newServerContent,
     });
   }
 
-  onAddBlueprint() {
+  onAddBlueprint(nameInput: HTMLInputElement) {
     this.blueprintCreated.emit({
-      serverName: this.newServerName,
+      // serverName: this.newServerName,
+      serverName: nameInput.value,
       serverContent: this.newServerContent,
     });
   }
