@@ -35,6 +35,11 @@ export class AppComponent {
   }
 
   onChangeFirst() {
+    console.log('Hooks : ngOnChanges(), ngDoCheck(), are called !');
     this.serverElements[0].name = 'Changed !';
+  }
+  onDestroyFirst() {
+    console.log('Hook : ngOnDestroy(), is called !');
+    this.serverElements.splice(0, 1);
   }
 }
