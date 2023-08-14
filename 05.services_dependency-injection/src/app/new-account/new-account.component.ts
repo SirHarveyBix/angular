@@ -12,7 +12,11 @@ export class NewAccountComponent {
   constructor(
     // private loggingService: LoggingService,
     private accountsService: AccountsService
-  ) {}
+  ) {
+    this.accountsService.statusUpdated.subscribe((status: string) =>
+      console.log('%cNew Status: ', 'color: #ed0a0a;', status)
+    );
+  }
 
   onCreateAccount(accountName: string, accountStatus: string) {
     this.accountsService.addAccount(accountName, accountStatus);
