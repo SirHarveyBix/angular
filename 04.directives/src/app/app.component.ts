@@ -11,4 +11,8 @@ export class AppComponent {
   evenNumbers = [2, 4];
 
   onlyOdd = false;
+
+  backgroundColorHandler(value: number) {
+    return value % 2 !== 0 ? 'yellow' : 'transparent';
+  }
 }
