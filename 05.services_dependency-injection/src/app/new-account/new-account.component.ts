@@ -10,6 +10,7 @@ import { LoggingService } from '../logging.service';
 export class NewAccountComponent {
   @Output() accountAdded = new EventEmitter<{ name: string; status: string }>();
 
+  // most common way to inject a service
   constructor(private loggingService: LoggingService) {}
 
   onCreateAccount(accountName: string, accountStatus: string) {
