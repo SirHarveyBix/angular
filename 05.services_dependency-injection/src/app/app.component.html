@@ -5,8 +5,8 @@
       </app-new-account>
       <hr />
       <app-account
-        *ngFor="let acc of accounts; let i = index"
-        [account]="acc"
+        *ngFor="let account of accounts; let i = index"
+        [account]="account"
         [id]="i"
         (statusChanged)="onStatusChanged($event)"
       >
