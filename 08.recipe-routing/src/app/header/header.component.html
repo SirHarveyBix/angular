@@ -16,19 +16,28 @@
       (window:resize)="collapsed = true"
     >
       <ul class="nav navbar-nav">
-        <li><a title="recipe" routerLink="/recipes">Recipes</a></li>
-        <li>
+        <li routerLinkActive="active">
+          <a title="recipe" routerLink="/recipes">Recipes</a>
+        </li>
+        <li routerLinkActive="active">
           <a title="shopping list" routerLink="/shopping-list">Shopping List</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" appDropdown>
-          <a class="dropdown-toggle" href="#" title="manage data" role="button">
+          <a
+            class="dropdown-toggle"
+            style="cursor: pointer"
+            title="manage data"
+            role="button"
+          >
             Manage <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#" title="save data">Save Data</a></li>
-            <li><a href="#" title="fetch data">Fetch Data</a></li>
+            <li><a style="cursor: pointer" title="save data">Save Data</a></li>
+            <li>
+              <a style="cursor: pointer" title="fetch data">Fetch Data</a>
+            </li>
           </ul>
         </li>
       </ul>
