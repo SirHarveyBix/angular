@@ -28,10 +28,15 @@ export class AppComponent implements OnInit {
       gender: new FormControl('male', Validators.required),
       hobbies: new FormArray([]),
     });
+
+    this.signupForm.statusChanges.subscribe((status) =>
+      console.log('%cvalueChanges :', 'color: red', status)
+    );
   }
 
   onSubmit() {
-    console.log(this.signupForm);
+    console.log('Submitted :', this.signupForm);
+    this.signupForm.reset({ gender: 'male' });
   }
 
   onAddHobby() {
