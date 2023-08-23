@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { RecipeService } from '../recipe.service';
-import { Ingredient } from 'src/app/shared/ingredient.module';
 
 @Component({
   selector: 'app-recipes-edit',
@@ -28,11 +27,11 @@ export class RecipesEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(
-      '%crecipes-edit.component.ts line:30 this.recipeForm',
-      'color: #007acc;',
-      this.recipeForm
-    );
+    if (this.editMode) {
+      this.recipeService.updateRecipe(this.id, this.recipeForm.value);
+    } else {
+      this.recipeService.addRecipe(this.recipeForm.value);
+    }
   }
 
   onAddIngredient() {
