@@ -26,6 +26,14 @@ export class RecipesEditComponent implements OnInit {
     });
   }
 
+  onSubmit() {
+    console.log(
+      '%crecipes-edit.component.ts line:30 this.recipeForm',
+      'color: #007acc;',
+      this.recipeForm
+    );
+  }
+
   private initForm() {
     let recipeName = '';
     let recipeImagePath = '';
