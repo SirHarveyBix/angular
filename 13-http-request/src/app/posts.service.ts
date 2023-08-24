@@ -39,4 +39,10 @@ export class PostsService {
         })
       );
   }
+
+  clearPosts() {
+    return this.http.delete(
+      'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json'
+    );
+  }
 }
