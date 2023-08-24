@@ -3,6 +3,7 @@ import { Server } from './app.component';
 
 @Pipe({
   name: 'filter',
+  pure: false,
 })
 export class FilterPipe implements PipeTransform {
   transform(value: Server[], filter: string, propName: string): Server[] {
