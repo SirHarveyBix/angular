@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
 
+export interface Server {
+  instanceType: string;
+  name: string;
+  status: string;
+  started: Date;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  servers = [
+  servers: Server[] = [
     {
       instanceType: 'medium',
       name: 'Production',
@@ -32,6 +39,8 @@ export class AppComponent {
       started: new Date(15, 1, 2017),
     },
   ];
+  filteredStatus = '';
+
   getStatusClasses(server: {
     instanceType: string;
     name: string;
