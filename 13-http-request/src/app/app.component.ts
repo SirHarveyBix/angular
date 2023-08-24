@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
 import { Post } from './post.model';
+import { PostsService } from './posts.service';
 
 @Component({
   selector: 'app-root',
@@ -10,56 +9,35 @@ import { Post } from './post.model';
 })
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
+  isFetching = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private postsService: PostsService) {}
 
   ngOnInit() {
-    this.fetchPost();
-  }
-
-  onCreatePost(postData: Post) {
-    // Send Http request
-    this.http
-      .post<{ name: string }>(
-        'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
-        postData
-      )
-      .subscribe((responseData) => {
-        console.log(
-          '%capp.component.ts responseData',
-          'color: #007acc;',
-          responseData
-        );
+    this.isFetching = true;
+    this.postsService
+      .fetchPosts() //
+      .subscribe((posts) => {
+        this.isFetching = false;
+        this.loadedPosts = posts;
       });
   }
 
+  onCreatePost(postData: Post) {
+    this.postsService.creatAndStorePost(postData);
+  }
+
   onFetchPosts() {
-    // Send Http request
-    this.fetchPost();
+    this.isFetching = true;
+    this.postsService
+      .fetchPosts() //
+      .subscribe((posts) => {
+        this.isFetching = false;
+        this.loadedPosts = posts;
+      });
   }
 
   onClearPosts() {
     // Send Http request
-  }
-
-  private fetchPost() {
-    this.http
-      .get<{ [key: string]: Post }>(
-        'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json'
-      )
-      .pipe(
-        map((responseData) => {
-          const postArray: Post[] = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              postArray.push({ ...responseData[key], id: key });
-            }
-          }
-          return postArray;
-        })
-      )
-      .subscribe((posts) => {
-        this.loadedPosts = posts;
-      });
   }
 }
