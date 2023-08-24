@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
-import { Subject, catchError, map, throwError } from 'rxjs';
+import { Subject, catchError, map, tap, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
@@ -13,21 +13,21 @@ export class PostsService {
     this.http
       .post<{ name: string }>(
         'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
-        { title, content }
+        { title, content },
+        { observe: 'response' }
       )
       .subscribe(
         (responseData) => {
-          console.log(
-            '%capp.component.ts responseData',
-            'color: #007acc;',
-            responseData
-          );
+          console.log('%cresponseData', 'color: #007acc;', responseData);
         },
         (error) => this.error.next(error.message)
       );
   }
 
   fetchPosts() {
+    let searchParams = new HttpParams();
+    searchParams = searchParams.append('print', 'nothing');
+    searchParams = searchParams.append('cutom', 'key');
     return this.http
       .get<{ [key: string]: Post }>(
         'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
@@ -35,7 +35,8 @@ export class PostsService {
           headers: new HttpHeaders({
             'Custom-Header': "don't write posts here",
           }),
-          params: new HttpParams().set('print', 'nothing'),
+          params: searchParams /*new HttpParams().set('print', 'nothing')*/,
+          responseType: 'json',
         }
       )
       .pipe(
@@ -55,8 +56,15 @@ export class PostsService {
   }
 
   clearPosts() {
-    return this.http.delete(
-      'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json'
-    );
+    return this.http
+      .delete(
+        'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
+        { observe: 'events' }
+      )
+      .pipe(
+        tap((event) => {
+          console.log('%cevent', 'color: #007acc;', event);
+        })
+      );
   }
 }
