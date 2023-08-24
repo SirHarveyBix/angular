@@ -13,6 +13,12 @@ export interface Server {
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  filteredStatus = '';
+  appStatus = new Promise((resolve, _reject) => {
+    setTimeout(() => {
+      resolve('stable');
+    }, 2000);
+  });
   servers: Server[] = [
     {
       instanceType: 'medium',
@@ -39,7 +45,6 @@ export class AppComponent {
       started: new Date(15, 1, 2017),
     },
   ];
-  filteredStatus = '';
 
   getStatusClasses(server: Server) {
     return {
