@@ -31,12 +31,26 @@
             title="manage data"
             role="button"
           >
-            Manage <span class="caret"></span>
+            Manage
+            <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a style="cursor: pointer" title="save data">Save Data</a></li>
             <li>
-              <a style="cursor: pointer" title="fetch data">Fetch Data</a>
+              <a
+                style="cursor: pointer"
+                title="save data"
+                (click)="onSaveData()"
+              >
+                Save Data
+              </a>
+            </li>
+            <li>
+              <a
+                style="cursor: pointer"
+                title="fetch data"
+                (click)="onFetchData()"
+                >Fetch Data</a
+              >
             </li>
           </ul>
         </li>
