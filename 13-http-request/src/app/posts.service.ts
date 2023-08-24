@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
-import { Subject, map } from 'rxjs';
+import { Subject, catchError, map, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
   error = new Subject<string>();
+
   constructor(private http: HttpClient) {}
 
   creatAndStorePost({ title, content }: Post) {
@@ -39,6 +40,9 @@ export class PostsService {
               postArray.push({ ...responseData[key], id: key });
             }
           }
+          catchError((errorResponse) => {
+            return throwError(() => new Error(errorResponse));
+          });
           return postArray;
         })
       );
