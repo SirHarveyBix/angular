@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
 import { Subject, catchError, map, throwError } from 'rxjs';
@@ -30,7 +30,13 @@ export class PostsService {
   fetchPosts() {
     return this.http
       .get<{ [key: string]: Post }>(
-        'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json'
+        'https://angular-http-request-b3287-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
+        {
+          headers: new HttpHeaders({
+            'Custom-Header': "don't write posts here",
+          }),
+          params: new HttpParams().set('print', 'nothing'),
+        }
       )
       .pipe(
         map((responseData) => {
