@@ -25,16 +25,17 @@ export class AuthComponent {
     this.isLoading = true;
     if (this.isLoginMode) {
     } else {
-      this.authService.singUp(form.value.email, form.value.password).subscribe(
-        (response) => {
-          this.isLoading = false;
-        },
-        (error) => {
-          this.error = error.message;
-          this.isLoading = false;
-          console.log(error);
-        }
-      );
+      this.authService
+        .singUp(form.value.email, form.value.password) //
+        .subscribe(
+          (response) => {
+            this.isLoading = false;
+          },
+          (errorMessage) => {
+            this.error = errorMessage;
+            this.isLoading = false;
+          }
+        );
     }
 
     form.reset();
