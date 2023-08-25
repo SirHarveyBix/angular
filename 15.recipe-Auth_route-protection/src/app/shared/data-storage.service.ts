@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from '../recipes/recipe.service';
 import { map, tap } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' }) // a service calling another service needs @Injectable
 export class DataStorageService {
