@@ -1,0 +1,9 @@
+section {
+  padding: 0.5rem;
+  border-radius: 4px;
+  background-color: #212020;
+}
+
+section h2 {
+  font-size: 1.25rem;
+}
