@@ -13,9 +13,10 @@ export class CounterControlsComponent {
 
   increment() {
     this.store.dispatch(increment({ anyValue: 2 }));
+    // this.store.dispatch(new IncrementAction(2));
   }
 
   decrement() {
-    this.store.dispatch(decrement());
+    this.store.dispatch(decrement({ decrementValue: 1 }));
   }
 }
