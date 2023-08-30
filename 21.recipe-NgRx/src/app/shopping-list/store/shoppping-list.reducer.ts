@@ -9,13 +9,13 @@ import {
 } from './shopping-list.action';
 import { Ingredient } from 'src/app/shared/ingredient.module';
 
-export interface State {
+export interface shoppingListState {
   ingredients: Ingredient[];
   editedIngredient: Ingredient;
   editedIngredientIndex: number;
 }
 
-const initialState: State = {
+const initialState: shoppingListState = {
   ingredients: [new Ingredient('Apples', 5), new Ingredient('Tomatoes', 10)],
   editedIngredient: null,
   editedIngredientIndex: -1,
@@ -24,17 +24,14 @@ const initialState: State = {
 export const shoppingListReducer = createReducer(
   initialState,
   on(addIngredient, (state, action) => ({
-    // will only work if ShoppingListActions.AddIngredient is an action created via createAction()
     ...state,
     ingredients: [...state.ingredients, action.ingredient],
   })),
   on(addIngredients, (state, action) => ({
-    // will only work if ShoppingListActions.AddIngredients is an action created via createAction()
     ...state,
     ingredients: [...state.ingredients, ...action.ingredients],
   })),
   on(updateIngredient, (state, action) => {
-    // will only work if ShoppingListActions.UpdateIngredient is an action created via createAction()
     const ingredient = state.ingredients[state.editedIngredientIndex];
     const updatedIngredient = {
       ...ingredient,
@@ -51,7 +48,6 @@ export const shoppingListReducer = createReducer(
     };
   }),
   on(deleteIngredient, (state) => {
-    // will only work if ShoppingListActions.DeleteIngredient is an action created via createAction()
     return {
       ...state,
       ingredients: state.ingredients.filter((ig, igIndex) => {
@@ -62,7 +58,6 @@ export const shoppingListReducer = createReducer(
     };
   }),
   on(startEdit, (state, action) => {
-    // will only work if ShoppingListActions.StartEdit is an action created via createAction()
     return {
       ...state,
       editedIngredientIndex: action.index,
@@ -70,7 +65,6 @@ export const shoppingListReducer = createReducer(
     };
   }),
   on(stopEdit, (state) => {
-    // will only work if ShoppingListActions.StopEdit is an action created via createAction()
     return {
       ...state,
       editedIngredient: null,

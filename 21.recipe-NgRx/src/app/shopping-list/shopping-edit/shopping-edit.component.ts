@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import {
   addIngredient,
   deleteIngredient,
+  stopEdit,
   updateIngredient,
 } from '../store/shopping-list.action';
 import * as fromApp from '../../store/app.reducer';
@@ -56,6 +57,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   onClear() {
     this.editMode = false;
     this.shoppingListForm.reset();
+    this.store.dispatch(stopEdit());
   }
 
   onDelete() {
@@ -65,5 +67,6 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.store.dispatch(stopEdit());
   }
 }
