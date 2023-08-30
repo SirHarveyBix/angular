@@ -4,6 +4,9 @@ import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { User } from './user.model';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/app.reducer';
+import { login, logout } from './store/auth.action';
 
 export interface AuthResponseData {
   kind: string;
@@ -20,7 +23,11 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private store: Store<AppState>
+  ) {}
 
   singUp(email: string, password: string) {
     environment;
@@ -57,15 +64,16 @@ export class AuthService {
     if (!userData) {
       return;
     }
-    const loadedUser = new User(
-      userData.email,
-      userData.id,
-      userData._token,
-      new Date(userData._tokenExpiration)
-    );
 
-    if (loadedUser.token) {
-      this.user.next(loadedUser);
+    if (userData._token) {
+      this.store.dispatch(
+        login({
+          email: userData.email,
+          userId: userData.id,
+          token: userData._token,
+          expirationDate: new Date(userData._tokenExpiration),
+        })
+      );
       const expirationDate =
         new Date(userData._tokenExpiration) //
           .getTime() - new Date().getTime();
@@ -75,7 +83,7 @@ export class AuthService {
   }
 
   logout() {
-    this.user.next(null);
+    this.store.dispatch(logout());
     this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
 
@@ -94,14 +102,22 @@ export class AuthService {
     const expirationDate = new Date(
       new Date().getTime() + Number(data.expiresIn) * 1000
     );
+    /*---*/
     const user = new User(
       data.email,
       data.localId,
       data.idToken,
       expirationDate
     );
-
-    this.user.next(user);
+    /*---*/
+    this.store.dispatch(
+      login({
+        email: data.email,
+        userId: data.localId,
+        token: data.idToken,
+        expirationDate,
+      })
+    );
     this.autoLogout(Number(data.expiresIn) * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }
