@@ -98,27 +98,26 @@ export class AuthService {
     }, expirationDuration);
   }
 
-  private handleAuthentication(data: AuthResponseData) {
+  private handleAuthentication({
+    email,
+    localId,
+    idToken,
+    expiresIn,
+  }: AuthResponseData) {
     const expirationDate = new Date(
-      new Date().getTime() + Number(data.expiresIn) * 1000
+      new Date().getTime() + Number(expiresIn) * 1000
     );
-    /*---*/
-    const user = new User(
-      data.email,
-      data.localId,
-      data.idToken,
-      expirationDate
-    );
-    /*---*/
+    const user = new User(email, localId, idToken, expirationDate);
+
     this.store.dispatch(
       login({
-        email: data.email,
-        userId: data.localId,
-        token: data.idToken,
+        email: email,
+        userId: localId,
+        token: idToken,
         expirationDate,
       })
     );
-    this.autoLogout(Number(data.expiresIn) * 1000);
+    this.autoLogout(Number(expiresIn) * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }
 
