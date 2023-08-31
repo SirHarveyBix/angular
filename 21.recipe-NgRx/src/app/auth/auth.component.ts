@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
-import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
 import { clearError, loginStart, signupStart } from './store/auth.action';
 
@@ -23,7 +23,7 @@ export class AuthComponent implements OnDestroy, OnInit {
   isLoading = false;
   error: string = null;
 
-  constructor(private store: Store<AppState>, private router: Router) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.storeSubscription = this.store
