@@ -39,6 +39,7 @@ const handleAuthentification = ({
     userId: localId,
     token: idToken,
     expirationDate,
+    redirect: true,
   });
 };
 
@@ -119,7 +120,7 @@ export class AuthEffects {
   authSuccess = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(ActionType.AUTHETICATE_SUCCESS),
+        ofType(ActionType.AUTHENTICATE_SUCCESS),
         tap(() => {
           this.router.navigate(['/']);
         })
@@ -130,7 +131,7 @@ export class AuthEffects {
   authRedirect = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(ActionType.AUTHETICATE_SUCCESS),
+        ofType(ActionType.AUTHENTICATE_SUCCESS),
         tap(() => {
           this.router.navigate(['/']);
         })
@@ -182,6 +183,7 @@ export class AuthEffects {
             userId: loadedUser.id,
             token: loadedUser.token,
             expirationDate: new Date(userData._tokenExpirationDate),
+            redirect: false,
           });
         }
         return { type: 'DUMMY' };
