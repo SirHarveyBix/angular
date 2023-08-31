@@ -3,10 +3,17 @@ import { Injectable } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from '../recipes/recipe.service';
 import { map, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/app.reducer';
+import { setRecipes } from '../recipes/store/recipe.actions';
 
-@Injectable({ providedIn: 'root' }) // a service calling another service needs @Injectable
+@Injectable({ providedIn: 'root' })
 export class DataStorageService {
-  constructor(private http: HttpClient, private recipeService: RecipeService) {}
+  constructor(
+    private http: HttpClient,
+    private recipeService: RecipeService,
+    private store: Store<AppState>
+  ) {}
 
   storeRecipes() {
     const recipes = this.recipeService.getRecipes();
@@ -35,7 +42,7 @@ export class DataStorageService {
           });
         }),
         tap((recipes) => {
-          this.recipeService.setRecipes(recipes);
+          return this.store.dispatch(setRecipes({ recipes }));
         })
       );
   }
