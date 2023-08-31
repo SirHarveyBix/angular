@@ -6,6 +6,8 @@ export enum ActionType {
   AUTHETICATE_FAIL = '[Auth] Login Fail',
   SIGNUP_START = '[Auth] Signup Start',
   LOGOUT = '[Auth] Logout',
+  AUTO_LOGIN = '[Auth] Auto Login',
+  CLEAR_ERROR = '[Auth] Clear Error',
 }
 
 export const authenticateSuccess = createAction(
@@ -30,7 +32,11 @@ export const authenticateFail = createAction(
   props<{ error: string }>()
 );
 
+export const clearError = createAction(ActionType.CLEAR_ERROR);
+
 export const signupStart = createAction(
   ActionType.SIGNUP_START,
   props<{ email: string; password: string }>()
 );
+
+export const autoLogin = createAction(ActionType.AUTO_LOGIN);

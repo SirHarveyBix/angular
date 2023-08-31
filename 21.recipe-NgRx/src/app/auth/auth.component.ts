@@ -6,7 +6,7 @@ import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
-import { loginStart, signupStart } from './store/auth.action';
+import { clearError, loginStart, signupStart } from './store/auth.action';
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +15,9 @@ import { loginStart, signupStart } from './store/auth.action';
 export class AuthComponent implements OnDestroy, OnInit {
   @ViewChild(PlaceholderDirective, { static: false })
   alertHost: PlaceholderDirective;
+
   private closeSubscription: Subscription;
+  private storeSubscription: Subscription;
 
   isLoginMode = true;
   isLoading = false;
@@ -24,13 +26,15 @@ export class AuthComponent implements OnDestroy, OnInit {
   constructor(private store: Store<AppState>, private router: Router) {}
 
   ngOnInit(): void {
-    this.store.select('auth').subscribe((authState) => {
-      this.isLoading = authState.loading;
-      this.error = authState.authError;
-      if (this.error) {
-        this.showErrorAlert(this.error);
-      }
-    });
+    this.storeSubscription = this.store
+      .select('auth')
+      .subscribe((authState) => {
+        this.isLoading = authState.loading;
+        this.error = authState.authError;
+        if (this.error) {
+          this.showErrorAlert(this.error);
+        }
+      });
   }
 
   onSwithchMode() {
@@ -56,12 +60,15 @@ export class AuthComponent implements OnDestroy, OnInit {
   }
 
   onHandleError() {
-    this.error = null;
+    this.store.dispatch(clearError());
   }
 
   ngOnDestroy(): void {
     if (this.closeSubscription) {
       this.closeSubscription.unsubscribe();
+    }
+    if (this.storeSubscription) {
+      this.storeSubscription.unsubscribe();
     }
   }
 
