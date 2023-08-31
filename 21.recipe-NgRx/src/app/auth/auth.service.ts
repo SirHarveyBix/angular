@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
-import { login, logout } from './store/auth.action';
+import { authenticateSuccess, logout } from './store/auth.action';
 
 export interface AuthResponseData {
   kind: string;
@@ -30,7 +30,6 @@ export class AuthService {
   ) {}
 
   singUp(email: string, password: string) {
-    environment;
     return this.http
       .post<AuthResponseData>(
         `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`,
@@ -67,7 +66,7 @@ export class AuthService {
 
     if (userData._token) {
       this.store.dispatch(
-        login({
+        authenticateSuccess({
           email: userData.email,
           userId: userData.id,
           token: userData._token,
@@ -110,7 +109,7 @@ export class AuthService {
     const user = new User(email, localId, idToken, expirationDate);
 
     this.store.dispatch(
-      login({
+      authenticateSuccess({
         email: email,
         userId: localId,
         token: idToken,

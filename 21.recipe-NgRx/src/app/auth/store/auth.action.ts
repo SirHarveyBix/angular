@@ -1,14 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 
 export enum ActionType {
-  LOGIN = '[Auth] Login',
   LOGIN_START = '[Auth] Login Start',
-  LOGIN_FAIL = '[Auth] Login Fail',
+  AUTHETICATE_SUCCESS = '[Auth] Login',
+  AUTHETICATE_FAIL = '[Auth] Login Fail',
+  SIGNUP_START = '[Auth] Signup Start',
   LOGOUT = '[Auth] Logout',
 }
 
-export const login = createAction(
-  ActionType.LOGIN,
+export const authenticateSuccess = createAction(
+  ActionType.AUTHETICATE_SUCCESS,
   props<{
     email: string;
     userId: string;
@@ -17,14 +18,19 @@ export const login = createAction(
   }>()
 );
 
-export const logout = createAction(ActionType.LOGOUT);
-
 export const loginStart = createAction(
   ActionType.LOGIN_START,
   props<{ email: string; password: string }>()
 );
 
-export const loginFail = createAction(
-  '[Auth] Login Fail',
+export const logout = createAction(ActionType.LOGOUT);
+
+export const authenticateFail = createAction(
+  ActionType.AUTHETICATE_FAIL,
   props<{ error: string }>()
+);
+
+export const signupStart = createAction(
+  ActionType.SIGNUP_START,
+  props<{ email: string; password: string }>()
 );
