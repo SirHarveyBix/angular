@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../user.model';
+import { AuthService } from '../auth.service';
 
 export interface AuthResponseData {
   kind: string;
@@ -65,7 +66,8 @@ export class AuthEffects {
   constructor(
     private http: HttpClient,
     private actions$: Actions,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   authSignup = createEffect(() =>
@@ -141,7 +143,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(ActionType.LOGOUT),
         tap(() => {
-          // this.authService.clearLogoutTimer();
+          this.authService.clearLogoutTimer();
           localStorage.removeItem('userData');
           this.router.navigate(['/auth']);
         })
@@ -159,10 +161,10 @@ export class AuthEffects {
           _token: string;
           _tokenExpirationDate: string;
         } = JSON.parse(localStorage.getItem('userData'));
+
         if (!userData) {
           return { type: 'DUMMY' };
         }
-
         const loadedUser = new User(
           userData.email,
           userData.id,
@@ -174,18 +176,13 @@ export class AuthEffects {
           const expirationDuration =
             new Date(userData._tokenExpirationDate).getTime() -
             new Date().getTime();
-          // this.authService.setLogoutTimer(expirationDuration);
+          this.authService.setLogoutTimer(expirationDuration);
           return authenticateSuccess({
             email: loadedUser.email,
             userId: loadedUser.id,
             token: loadedUser.token,
             expirationDate: new Date(userData._tokenExpirationDate),
           });
-
-          // const expirationDuration =
-          //   new Date(userData._tokenExpirationDate).getTime() -
-          //   new Date().getTime();
-          // this.autoLogout(expirationDuration);
         }
         return { type: 'DUMMY' };
       })
