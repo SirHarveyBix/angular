@@ -1,8 +1,11 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  ActionType,
   authenticateFail,
   authenticateSuccess,
+  autoLogin,
+  loginStart,
+  logout,
+  signupStart,
 } from './auth.action';
 import { switchMap, map, of, tap, catchError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -22,7 +25,7 @@ export interface AuthResponseData {
   registered?: boolean;
 }
 
-const handleAuthentification = ({
+const handleAuthentication = ({
   expiresIn,
   email,
   localId,
@@ -73,7 +76,7 @@ export class AuthEffects {
 
   authSignup = createEffect(() =>
     this.actions$.pipe(
-      ofType(ActionType.SIGNUP_START),
+      ofType(signupStart),
       switchMap(({ email, password }) => {
         return this.http
           .post<AuthResponseData>(
@@ -82,7 +85,7 @@ export class AuthEffects {
           )
           .pipe(
             map((resData) => {
-              return handleAuthentification(resData);
+              return handleAuthentication(resData);
             }),
             catchError((errorRes) => {
               return handleError(errorRes);
@@ -94,7 +97,7 @@ export class AuthEffects {
 
   authLogin = createEffect(() =>
     this.actions$.pipe(
-      ofType(ActionType.LOGIN_START),
+      ofType(loginStart),
       switchMap(({ email, password }) => {
         return this.http
           .post<AuthResponseData>(
@@ -107,7 +110,7 @@ export class AuthEffects {
           )
           .pipe(
             map((resData) => {
-              return handleAuthentification(resData);
+              return handleAuthentication(resData);
             }),
             catchError((errorRes) => {
               return handleError(errorRes);
@@ -117,24 +120,11 @@ export class AuthEffects {
     )
   );
 
-  authSuccess = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(ActionType.AUTHENTICATE_SUCCESS),
-        tap(() => {
-          this.router.navigate(['/']);
-        })
-      ),
-    { dispatch: false }
-  );
-
   authRedirect = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(ActionType.AUTHENTICATE_SUCCESS),
-        tap(() => {
-          this.router.navigate(['/']);
-        })
+        ofType(authenticateSuccess),
+        tap((action) => action.redirect && this.router.navigate(['/']))
       ),
     { dispatch: false }
   );
@@ -142,7 +132,7 @@ export class AuthEffects {
   authLogout = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(ActionType.LOGOUT),
+        ofType(logout),
         tap(() => {
           this.authService.clearLogoutTimer();
           localStorage.removeItem('userData');
@@ -154,7 +144,7 @@ export class AuthEffects {
 
   autoLogin = createEffect(() =>
     this.actions$.pipe(
-      ofType(ActionType.AUTO_LOGIN),
+      ofType(autoLogin),
       map(() => {
         const userData: {
           email: string;

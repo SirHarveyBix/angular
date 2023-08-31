@@ -5,6 +5,9 @@ export enum ActionType {
   SET_RECIPES = '[Recipes] Set Recipes',
   FETCH_RECIPES = '[Recipes] Fetch Recipes',
   STORE_RECIPES = '[Recipe] Store Recipes',
+  ADD_RECIPE = '[Recipe] Add Recipe',
+  UPDATE_RECIPE = '[Recipe] Update Recipe',
+  DELETE_RECIPE = '[Recipe] Delete Recipe',
 }
 
 export const setRecipes = createAction(
@@ -17,3 +20,25 @@ export const setRecipes = createAction(
 export const fetchRecipes = createAction(ActionType.FETCH_RECIPES);
 
 export const storeRecipes = createAction(ActionType.STORE_RECIPES);
+
+export const addRecipe = createAction(
+  ActionType.ADD_RECIPE,
+  props<{
+    recipe: Recipe;
+  }>()
+);
+
+export const updateRecipe = createAction(
+  ActionType.UPDATE_RECIPE,
+  props<{
+    index: number;
+    recipe: Recipe;
+  }>()
+);
+
+export const deleteRecipe = createAction(
+  ActionType.DELETE_RECIPE,
+  props<{
+    index: number;
+  }>()
+);
