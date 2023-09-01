@@ -7,7 +7,6 @@ export enum ActionType {
   SIGNUP_START = '[Auth] Signup Start',
   LOGOUT = '[Auth] Logout',
   AUTO_LOGIN = '[Auth] Auto Login',
-  AUTO_LOGOUT = '[Auth] Auto Logout',
   CLEAR_ERROR = '[Auth] Clear Error',
 }
 
