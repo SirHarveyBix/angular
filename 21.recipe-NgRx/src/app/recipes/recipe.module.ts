@@ -10,6 +10,8 @@ import { RecipesComponent } from './recipes.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecipeRoutingModule } from './recipe-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { recipeReducer } from './store/recipe.reducer';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     RecipeRoutingModule,
     SharedModule,
+    StoreModule.forFeature('recipes', recipeReducer),
   ],
 })
 export class RecipeModule {}

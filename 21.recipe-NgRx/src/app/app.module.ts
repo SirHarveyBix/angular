@@ -11,9 +11,10 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
-import { appReducer } from './store/app.reducer';
 import { AuthEffects } from './auth/store/auth.effects';
 import { environment } from 'src/environments/environment';
+import { authReducer } from './auth/store/auth.reducer';
+import { RecipeEffects } from './recipes/store/recipe.effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -25,9 +26,8 @@ import { environment } from 'src/environments/environment';
     CoreModule,
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
     StoreRouterConnectingModule.forRoot(),
-    StoreModule.forRoot(appReducer, {}),
-    EffectsModule.forRoot([AuthEffects]),
-    StoreRouterConnectingModule.forRoot(),
+    StoreModule.forRoot({ auth: authReducer }),
+    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],

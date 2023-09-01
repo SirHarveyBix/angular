@@ -7,7 +7,8 @@ import {
   logout,
   signupStart,
 } from './auth.action';
-import { switchMap, map, of, tap, catchError } from 'rxjs';
+import { of } from 'rxjs';
+import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
@@ -16,12 +17,12 @@ import { User } from '../user.model';
 import { AuthService } from '../auth.service';
 
 export interface AuthResponseData {
-  kind: string;
+  kind?: string;
   email: string;
   expiresIn: string;
   idToken: string;
   localId: string;
-  refreshToken: string;
+  refreshToken?: string;
   registered?: boolean;
 }
 
@@ -74,16 +75,21 @@ export class AuthEffects {
     private authService: AuthService
   ) {}
 
-  authSignup = createEffect(() =>
+  authSignup$ = createEffect(() =>
     this.actions$.pipe(
       ofType(signupStart),
       switchMap(({ email, password }) => {
         return this.http
           .post<AuthResponseData>(
-            `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`,
+            'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' +
+              // `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`,
+              environment.firebaseAPIKey,
             { email, password, returnSecureToken: true }
           )
           .pipe(
+            tap((resData) => {
+              this.authService.setLogoutTimer(Number(resData.expiresIn) * 1000);
+            }),
             map((resData) => {
               return handleAuthentication(resData);
             }),
@@ -95,13 +101,14 @@ export class AuthEffects {
     )
   );
 
-  authLogin = createEffect(() =>
+  authLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loginStart),
       switchMap(({ email, password }) => {
         return this.http
           .post<AuthResponseData>(
-            `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`,
+            'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' +
+              environment.firebaseAPIKey,
             {
               email,
               password,
@@ -109,6 +116,9 @@ export class AuthEffects {
             }
           )
           .pipe(
+            tap((resData) => {
+              this.authService.setLogoutTimer(Number(resData.expiresIn) * 1000);
+            }),
             map((resData) => {
               return handleAuthentication(resData);
             }),
@@ -120,7 +130,7 @@ export class AuthEffects {
     )
   );
 
-  authRedirect = createEffect(
+  authRedirect$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(authenticateSuccess),
@@ -129,7 +139,7 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  authLogout = createEffect(
+  authLogout$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(logout),
@@ -142,7 +152,7 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  autoLogin = createEffect(() =>
+  autoLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(autoLogin),
       map(() => {

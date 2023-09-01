@@ -10,7 +10,7 @@ import { take, map, switchMap } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.reducer';
-import { ActionType, fetchRecipes } from './store/recipe.actions';
+import { fetchRecipes, setRecipes } from './store/recipe.actions';
 import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable({ providedIn: 'root' })
@@ -30,9 +30,9 @@ export class recipeResolverService implements Resolve<Recipe[]> {
         if (recipes.length === 0) {
           this.store.dispatch(fetchRecipes());
           return this.actions$.pipe(
-            ofType(ActionType.FETCH_RECIPES),
-            take(1)
-            // map(() => recipes)
+            ofType(setRecipes),
+            take(1),
+            map(() => recipes) // ?
           );
         } else {
           return of(recipes);

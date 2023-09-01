@@ -1,7 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { Recipe } from '../recipe.model';
 import {
-  ActionType,
   addRecipe,
   deleteRecipe,
   setRecipes,

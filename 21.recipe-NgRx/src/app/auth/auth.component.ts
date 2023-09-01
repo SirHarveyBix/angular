@@ -45,16 +45,13 @@ export class AuthComponent implements OnDestroy, OnInit {
     if (!form.valid) {
       return;
     }
+    const email = form.value.email;
+    const password = form.value.password;
 
-    this.isLoading = true;
     if (this.isLoginMode) {
-      this.store.dispatch(
-        loginStart({ email: form.value.email, password: form.value.password })
-      );
+      this.store.dispatch(loginStart({ email, password }));
     } else {
-      this.store.dispatch(
-        signupStart({ email: form.value.email, password: form.value.password })
-      );
+      this.store.dispatch(signupStart({ email, password }));
     }
     form.reset();
   }

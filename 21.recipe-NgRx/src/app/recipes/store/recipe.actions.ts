@@ -2,8 +2,8 @@ import { createAction, props } from '@ngrx/store';
 import { Recipe } from '../recipe.model';
 
 export enum ActionType {
-  SET_RECIPES = '[Recipes] Set Recipes',
-  FETCH_RECIPES = '[Recipes] Fetch Recipes',
+  SET_RECIPES = '[Recipe] Set Recipes',
+  FETCH_RECIPES = '[Recipe] Fetch Recipes',
   STORE_RECIPES = '[Recipe] Store Recipes',
   ADD_RECIPE = '[Recipe] Add Recipe',
   UPDATE_RECIPE = '[Recipe] Update Recipe',
